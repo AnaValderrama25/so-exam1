@@ -3,7 +3,7 @@
 **Curso:** Sistemas Operativos  
 **Docente:** Daniel Barragán C.  
 **Tema:** Comandos de Linux, Virtualización  
-**Correo:** daniel.barragan at correo.icesi.edu.co
+**Correo:** daniel.barragan at correo.icesi.edu.co  
 **Estudiante:** Ana Valderrama  
 **Código:** A00065868  
 
@@ -54,7 +54,7 @@ jq -s add sum-me.txt
 Este reto consistía en eliminar los espacios que existían en los nombres de los archivos, se podía hacer de diferentes maneras con el comando rename o con el comando tr, yo emplee este último que traduce, comprime y/o borra caracteres de la entrada estándar, escribiendo el resultado en la salida estándar, sustiyendo el espacio por un punto.  
 En la consola virtual,  
 ![][3]  
-En CentOS7, creee varios directorios con espacios en sus nombres para ello fue necesario colocar un backslash después del la primera palabra y antes del espacio, debido a que si se coloca solo el espacio se crean directorios diferentes por cada palabra, para mostrar cada directorio en una linea se empleo ls -1 y luego | para seguir con el comando tr (hacer pipeline, varias instrucciones), como se observa en la siguiente ilustración,   
+En CentOS7, cree varios directorios con espacios en sus nombres para ello fue necesario colocar un backslash después del la primera palabra y antes del espacio, debido a que si se coloca solo el espacio se crean directorios diferentes por cada palabra, para mostrar cada directorio en una linea se empleo ls -1 y luego | para seguir con el comando tr (hacer pipeline, varias instrucciones), como se observa en la siguiente ilustración,   
 ![][4]  
   
 - **reverse_README:**   
