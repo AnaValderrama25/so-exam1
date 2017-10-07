@@ -82,7 +82,18 @@ En la consola virtual,
 ![][12]  
 ![][13]  
 En CentOS7,  
-![][14]  
+![][14]   
+  
+  
+4. En este punto se requería generar un script, que descargara un libro del proyecto https://www.gutenberg.org/ y lo almacenara en el directorio /home/gutenberg/mybooks, para esto se realizó lo siguiente:
+- Primero se creó el usuario gutenberg desde root con el comando adduser y se le asignó una contraseña con el comando passwd gutenberg,  
+![][15]  
+-Luego de crear el usuario gutenberg se accedió a él, y se creó la carpeta mybooks donde posteriormente se almacenará el libro descargado del proyecto.  
+-Desde el usuario root se creó una carpeta scripts, que va a contener el script a ejecutar, se crea el script downloadbook.sh con el comando vi, el script contiene una breve descripción al inicio lo más importante es la línea que aparece en primer lugar, que permite que se pueda ejecutar más adelante y es: #!/bin/bash, debido a que el proyecto Gutenberg cuenta con una biblioteca muy amplia de libros, se genera un número aleatorio entre 1 y 1500, con el comando RANDOM, y se introduce el número sobre el URL que va a descargar los libros. Se emplea el camando rm -f (Archivo-Directorio) para que borre el archivo que se esta pasando como parámetro incluso si no existe (por eso -f/ un posible libro), luego con el comando wget (DirectorioDestino) (URLOrigen) se extrae el libro de la web, con este comando se empleó el parámetro -O para descargar el archivo de texto plano en un directorio específico y con un nombre específico.  
+![][16]  
+Existencia del directorio /home/gutenberg/mybooks,  
+![][17]  
+-Luego, para que este script sea ejecutado cada cinco minutos fue necesario consultar Crontab, que es un archivo que contiene instrucciones para que un comando se ejecute en una fecha, los comandos se ejecutarán en el usuario en donde crontab se encuentre, en este caso todo lo hice desde el usuario root, crontab es el programa que ejecuta cron daemon y muestra todas las actualizaciones como correos en /var/spool, los cron jobs son tareas que se ejecutan periodicamente, lo que es muy útil si se necesita ejecutar un script varias veces, como en este caso. el formato de crontab esta compuesto por 6 columnas, las primeras 5 detallan el tiempo en el que se va a ejecutar el comando,el primer campo es el de los minutos por eso se empleó /5para que sea ejecutado cada 5 minutos, y la última contiene el comando a ejecutar en este caso el script. 
 
 
 ### Referencias
