@@ -93,7 +93,7 @@ En CentOS7,
 ![][16]  
 Existencia del directorio /home/gutenberg/mybooks,  
 ![][17]  
--Luego, para que este script sea ejecutado cada cinco minutos fue necesario consultar Crontab, que es un archivo que contiene instrucciones para que un comando se ejecute en una fecha, los comandos se ejecutarán en el usuario en donde crontab se encuentre, en este caso todo lo hice desde el usuario root, crontab es el programa que ejecuta cron daemon y muestra todas las actualizaciones como correos en /var/spool, los cron jobs son tareas que se ejecutan periodicamente, lo que es muy útil si se necesita ejecutar un script varias veces, como en este caso. el formato de crontab esta compuesto por 6 columnas, las primeras 5 detallan el tiempo en el que se va a ejecutar el comando,el primer campo es el de los minutos por eso se empleó /5para que sea ejecutado cada 5 minutos, y la última contiene el comando a ejecutar en este caso el script. 
+-Luego, para que este script sea ejecutado cada cinco minutos fue necesario consultar Crontab, que es un archivo que contiene instrucciones para que un comando se ejecute en una fecha, los comandos se ejecutarán en el usuario en donde crontab se encuentre, en este caso todo lo hice desde el usuario root, crontab es el programa que ejecuta cron daemon y muestra todas las actualizaciones como correos en /var/spool, los cron jobs son tareas que se ejecutan periodicamente, lo que es muy útil si se necesita ejecutar un script varias veces, como en este caso. el formato de crontab esta compuesto por 6 columnas, las primeras 5 detallan el tiempo en el que se va a ejecutar el comando,el primer campo es el de los minutos por eso se empleó /5para que sea ejecutado cada 5 minutos, y la última contiene el comando a ejecutar en este caso el script.  
 ![][18]  
 Después de haberlo editado, informa al usuario que los cambios en crontab serán aplicados luego de 5 minutos, la notificación del primer libro llegó:  
 ![][19]  
@@ -102,6 +102,7 @@ A los 5 minutos el siguiente:
 ![][21]  
 Se verificó que solo existiera un libro en la carpeta indicada, así:  
 ![][22]  
+Algo que fue necesario para que el script corriera correctamente desde root, fue otorgarle todos los permisos a ese archivo, pues inicialmente llegó un mensaje avisando el acceso denegado al script. Se empleó chmod 777 downloadbook.sh, después de ejecutar ese comando los libros se descargaron con normalidad.
   
 
 
