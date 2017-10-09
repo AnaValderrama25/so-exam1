@@ -114,10 +114,11 @@ Seguidamente, se define la ruta que contiene la canción en formato .mp3 con la 
 ![][24]    
 Posteriormente, como se explica en el repositorio que contiene el código fuente se instancian dos módulos, la función de estos module_param y MODULE_PARAM_DESC es especificar el archivo que contiene al rickroll, los permisos que necesita el módulo y una breve descripción de la variable declarada en module_param,    
 ![][25]  
-Se realizan después unas modificaciones al registro de control cr0 para poder modificar la tabla de llamados al sistema, debido a que ésta se encuentra protegida. Luego, el modificador asmlinkage le dice al compilador que en vez de buscar en los registros los llamados al sistema busque que pedirle al kernel en la  pila de la CPU, haciendo que cada vez que se busqué abrir un archivo .mp3 sea reemplazado por la cancion de *Astley*.  
+Se realizan después unas modificaciones al registro de control cr0 para poder modificar la tabla de llamados al sistema, debido a que el área de memoria donde se encuentra la tabla está protegida. Luego, el modificador asmlinkage le dice al compilador que en vez de buscar en los registros los llamados al sistema busque que pedirle al kernel en la  pila de la CPU, haciendo que cada vez que se busqué abrir un archivo .mp3 sea reemplazado por la cancion de *Astley*.  
 ![][26]  
-En el método a continuación se inicializa el *rickrolling* modificando la tabla de llamadas al sistema, para que realice el truco, reemplazando la función normal por la del *rickrolling*, se realizan las verificaciones correspondientes como la de la existencia de un archivo para rickroll y  la de la tabla de llamados del sistema cuyo metodo también se encuentra en el código , informando las excepciones en caso de que las verificaciones no se puedan llevar a cabo.   
+En el método a continuación se inicializa el *rickrolling* modificando la tabla de llamadas al sistema , para que realice el truco, reemplazando la función normal por la del *rickrolling*, se realizan las verificaciones correspondientes como la de la existencia de un archivo para rickroll y  la de la tabla de llamados del sistema, informando las excepciones en caso de que las verificaciones no se puedan llevar a cabo.   
 ![][27]  
+Método para encontrar la tabla de llamados al sistema:  
 ![][28]  
 Luego de esto, ocurre realmente el *rickrolling*, esto es, el étodo que se llama en la inicalización, con el modificador asmlinkage se realiza el proceso de la apertura del archivo .mp3 reproduciendo la canción en cuestión, recibe la ruta del archivo, verifica que el archivo sea .mp3, en caso de no serlo realiza la llamada al sistema normal, en caso de serlo, va al kernel y cambia el segmento con el cual el generalmente realiza esta acción, cambiando la llamada al sistema y haciendo que cuando se abra el archivo se reproduzca *Never Give UP*.    
 ![][29]    
@@ -146,6 +147,14 @@ Cabe aclarar que todo el código descrito anteriormente no podría ejecutarse si
 * http://www.unix.com/shell-programming-and-scripting/166246-grep-awk-only-print-lines-two-columns-file.html  
 * https://stackoverflow.com/questions/22190902/cut-or-awk-command-to-print-first-field-of-first-row  
 * https://stedolan.github.io/jq/  
+* https://www.quora.com/Linux-Kernel-What-does-asmlinkage-mean-in-the-definition-of-system-calls  
+* https://stackoverflow.com/questions/10459688/what-is-the-asmlinkage-modifier-meant-for  
+* https://www.cyberciti.biz/faq/howto-linux-unix-delete-remove-file/  
+* https://coderwall.com/p/s2ttyg/random-number-generator-in-bash  
+* http://francisconi.org/linux/comandos/awk  
+
+
+
 
 
 [1]: images/Desafio1.PNG
