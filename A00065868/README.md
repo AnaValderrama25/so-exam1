@@ -107,23 +107,23 @@ Algo que fue necesario para que el script corriera correctamente desde root, fue
   
 **5.** En las referencias se encuentra un enlace de youtube (https://www.youtube.com/watch?v=efEZZZf_nTc) que está relacionado con el código fuente rickroll.c del repositorio https://github.com/jvns/kernel-module-fun/blob/master/rickroll.c , en el video de youtube se observa que apartir de la compilación y ejecución de un código que carga un modulo al kernel alterando la forma en la que se reproducen los archivos .mp3  reproduciendo una misma canción, *Never Gonna Give You - Rick Astley*.   
 El código fuente en el repositorio funciona de la siguiente manera:  
-En primer lugar se incluyen los módulos necesarios para extender funcionalidades del kernel, la inicialización y las llamadas al sistema, seguidamente se crean tres tipos de modulos: MODULE_LICENSE, MODULE_AUTHOR y MODULE_DESCRIPTION, estos módulos no son empleados por kernel exactamente se utilizan para informar al usuario caracteristicas del modulo, como su licencia, autor y qué hace.
-![][23]
+En primer lugar se incluyen los módulos necesarios para extender funcionalidades del kernel, la inicialización y las llamadas al sistema, seguidamente se crean tres tipos de modulos: MODULE_LICENSE, MODULE_AUTHOR y MODULE_DESCRIPTION, estos módulos no son empleados por kernel exactamente se utilizan para informar al usuario caracteristicas del modulo, como su licencia, autor y qué hace.  
+![][23]  
 
 Seguidamente, se define la ruta que contiene la canción en formato .mp3 con la que se realizará el rickroll (la que reemplazará a todas las canciones en formato .mp3),  
 ![][24]    
-Posteriormente, como se explica en el repositorio que contiene el código fuente se instancian dos módulos, la función de estos module_param y MODULE_PARAM_DESC es especificar el archivo que contiene al rickroll, los permisos que necesita el módulo y una breve descripción de la variable declarada en module_param,  
+Posteriormente, como se explica en el repositorio que contiene el código fuente se instancian dos módulos, la función de estos module_param y MODULE_PARAM_DESC es especificar el archivo que contiene al rickroll, los permisos que necesita el módulo y una breve descripción de la variable declarada en module_param,    
 ![][25]  
 Se realizan después unas modificaciones al registro de control cr0 para poder modificar la tabla de llamados al sistema, debido a que ésta se encuentra protegida. Luego, el modificador asmlinkage le dice al compilador que en vez de buscar en los registros los llamados al sistema busque que pedirle al kernel en la  pila de la CPU, haciendo que cada vez que se busqué abrir un archivo .mp3 sea reemplazado por la cancion de *Astley*.  
 ![][26]  
 En el método a continuación se inicializa el *rickrolling* modificando la tabla de llamadas al sistema, para que realice el truco, reemplazando la función normal por la del *rickrolling*, se realizan las verificaciones correspondientes como la de la existencia de un archivo para rickroll y  la de la tabla de llamados del sistema cuyo metodo también se encuentra en el código , informando las excepciones en caso de que las verificaciones no se puedan llevar a cabo.   
 ![][27]  
-![][28]
-Luego de esto, ocurre realmente el *rickrolling*, esto es, con el modificador asmlinkage se realiza el proceso de la apertura del archivo .mp3 reproduciendo la canción en cuestión, recibe la ruta del archivo, verifica que el archivo sea .mp3, en caso de no serlo realiza la llamada al sistema normal, en caso de serlo, va al kernel y cambia el segmento con el cual el generalmente realiza esta acción, cambiando la llamada al sistema y haciendo que cuando se abra el archivo se reproduzca *Never Give UP*.  
-![][29]  
+![][28]  
+Luego de esto, ocurre realmente el *rickrolling*, esto es, el étodo que se llama en la inicalización, con el modificador asmlinkage se realiza el proceso de la apertura del archivo .mp3 reproduciendo la canción en cuestión, recibe la ruta del archivo, verifica que el archivo sea .mp3, en caso de no serlo realiza la llamada al sistema normal, en caso de serlo, va al kernel y cambia el segmento con el cual el generalmente realiza esta acción, cambiando la llamada al sistema y haciendo que cuando se abra el archivo se reproduzca *Never Give UP*.    
+![][29]    
 Existe un método que restaura el sistema, cambiando la tabla de llamadas al sistema, desactivando el *rickrolling*, teniendo en cuenta que necesario desactivar y activar la protección de escritura en memoria con las variables  DISABLE_WRITE_PROTECTION y ENABLE_WRITE_PROTECTION, que se usaron cada vez que era necesario alterar la tabla de llamados al sistema,   
 ![][30]  
-Cabe aclarar que todo el código descrito anteriormente no podría ejecutarse sin la inicialización y cierre del driver que se realiza gracias a los modulos de module_init y module_exit, el primero llama al método de inicialización y el segundo al de restauración del sistema.
+Cabe aclarar que todo el código descrito anteriormente no podría ejecutarse sin la inicialización y cierre del driver que se realiza gracias a los modulos de module_init y module_exit, el primero llama al método de inicialización y el segundo al de restauración del sistema.  
 ![][31]  
 
 
@@ -136,6 +136,17 @@ Cabe aclarar que todo el código descrito anteriormente no podría ejecutarse si
 * https://www.gutenberg.org  
 * https://github.com/jvns/kernel-module-fun/blob/master/rickroll.c
 * https://www.youtube.com/watch?v=efEZZZf_nTc
+* https://oscarforner.com/2016/03/19/Linux_Kernel_Module_example__Rickroll_prank_  
+* http://www.tldp.org/LDP/lkmpg/2.6/html/x279.html  
+* http://man7.org/linux/man-pages/man2/syscalls.2.html   
+* http://www.tldp.org/LDP/lkmpg/2.6/html/x323.html  
+* http://www.theunixschool.com/2012/06/5-ways-to-reverse-order-of-file-content.html  
+* https://stackoverflow.com/questions/742466/how-can-i-reverse-the-order-of-lines-in-a-file  
+* https://www.cyberciti.biz/faq/unix-linux-shell-removing-duplicate-lines/  
+* http://www.unix.com/shell-programming-and-scripting/166246-grep-awk-only-print-lines-two-columns-file.html  
+* https://stackoverflow.com/questions/22190902/cut-or-awk-command-to-print-first-field-of-first-row  
+* https://stedolan.github.io/jq/  
+
 
 [1]: images/Desafio1.PNG
 [2]: images/Desafio1C.PNG  
