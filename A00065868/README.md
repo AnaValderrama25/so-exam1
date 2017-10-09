@@ -38,7 +38,7 @@ El primer parcial del curso sistemas operativos trata sobre el manejo de los com
 6. El informe debe ser entregado en formato pdf a través del moodle y el informe en formato README.md debe ser subido a un repositorio de github. El repositorio de github debe ser un fork de https://github.com/ICESI-Training/so-exam1 y para la entrega deberá hacer un Pull Request (PR) respetando la estructura definida. El código fuente y la url de github deben incluirse en el informe (10%)  
 
 **Informe Solución**  
-3. La página https://cmdchallenge.com propone unos retos en la consola virtual, pero no sólo fueron resueltos ahí sino que también se llevaron a cabo con ejemplos prácticos en CentOS7.
+**3.** La página https://cmdchallenge.com propone unos retos en la consola virtual, pero no sólo fueron resueltos ahí sino que también se llevaron a cabo con ejemplos prácticos en CentOS7.
 Así,  
 - **sum_all_numbers:**  
 El primero consistía en sumar los números contenidos en un archivo txt, en la consola virtual se empleó el filtro de jq especial para archivos JSON que es bastante útil en diferentes casos, como parámetro opcional se empleó -s que coloca todas las entradas de un archivo en un arreglo, el comando add realiza la suma de los elementos contnidos en el arreglo, arrojando la respuesta que necesito.  
@@ -85,7 +85,7 @@ En CentOS7,
 ![][14]   
   
   
-4. En este punto se requería generar un script, que descargara un libro del proyecto https://www.gutenberg.org/ y lo almacenara en el directorio /home/gutenberg/mybooks, para esto se realizó lo siguiente:
+**4.** En este punto se requería generar un script, que descargara un libro del proyecto https://www.gutenberg.org/ y lo almacenara en el directorio /home/gutenberg/mybooks, para esto se realizó lo siguiente:
 - Primero se creó el usuario gutenberg desde root con el comando adduser y se le asignó una contraseña con el comando passwd gutenberg,  
 ![][15]  
 -Luego de crear el usuario gutenberg se accedió a él, y se creó la carpeta mybooks donde posteriormente se almacenará el libro descargado del proyecto.  
@@ -102,8 +102,33 @@ A los 5 minutos el siguiente:
 ![][21]  
 Se verificó que solo existiera un libro en la carpeta indicada, así:  
 ![][22]  
-Algo que fue necesario para que el script corriera correctamente desde root, fue otorgarle todos los permisos a ese archivo, pues inicialmente llegó un mensaje avisando el acceso denegado al script. Se empleó chmod 777 downloadbook.sh, después de ejecutar ese comando los libros se descargaron con normalidad.
+Algo que fue necesario para que el script corriera correctamente desde root, fue otorgarle todos los permisos a ese archivo, pues inicialmente llegó un mensaje avisando el acceso denegado al script. Se empleó chmod 777 downloadbook.sh, después de ejecutar ese comando los libros se descargaron con normalidad.  
   
+  
+**5.** En las referencias se encuentra un enlace de youtube (https://www.youtube.com/watch?v=efEZZZf_nTc) que está relacionado con el código fuente rickroll.c del repositorio https://github.com/jvns/kernel-module-fun/blob/master/rickroll.c , en el video de youtube se observa que apartir de la compilación y ejecución de un código que carga un modulo al kernel alterando la forma en la que se reproducen los archivos .mp3  reproduciendo una misma canción, *Never Gonna Give You - Rick Astley*.   
+El código fuente en el repositorio funciona de la siguiente manera:  
+En primer lugar se incluyen los módulos necesarios para extender funcionalidades del kernel, la inicialización y las llamadas al sistema, seguidamente se crean tres tipos de modulos: MODULE_LICENSE, MODULE_AUTHOR y MODULE_DESCRIPTION, estos módulos no son empleados por kernel exactamente se utilizan para informar al usuario caracteristicas del modulo, como su licencia, autor y qué hace.
+![][23]
+
+Seguidamente, se define la ruta que contiene la canción en formato .mp3 con la que se realizará el rickroll (la que reemplazará a todas las canciones en formato .mp3),  
+![][24]    
+Posteriormente, como se explica en el repositorio que contiene el código fuente se instancian dos módulos, la función de estos module_param y MODULE_PARAM_DESC es especificar el archivo que contiene al rickroll, los permisos que necesita el módulo y una breve descripción de la variable declarada en module_param,  
+![][25]  
+Se realizan después unas modificaciones al registro de control cr0 para poder modificar la tabla de llamados al sistema, debido a que ésta se encuentra protegida. Luego, el modificador asmlinkage le dice al compilador que en vez de buscar en los registros los llamados al sistema busque que pedirle al kernel en la  pila de la CPU, haciendo que cada vez que se busqué abrir un archivo .mp3 sea reemplazado por la cancion de *Astley*.  
+![][26]  
+En el método a continuación se inicializa el *rickrolling* modificando la tabla de llamadas al sistema, para que realice el truco, reemplazando la función normal por la del *rickrolling*, se realizan las verificaciones correspondientes como la de la existencia de un archivo para rickroll y  la de la tabla de llamados del sistema cuyo metodo también se encuentra en el código , informando las excepciones en caso de que las verificaciones no se puedan llevar a cabo.   
+![][27]  
+![][28]
+Luego de esto, ocurre realmente el *rickrolling*, esto es, con el modificador asmlinkage se realiza el proceso de la apertura del archivo .mp3 reproduciendo la canción en cuestión, recibe la ruta del archivo, verifica que el archivo sea .mp3, en caso de no serlo realiza la llamada al sistema normal, en caso de serlo, va al kernel y cambia el segmento con el cual el generalmente realiza esta acción, cambiando la llamada al sistema y haciendo que cuando se abra el archivo se reproduzca *Never Give UP*.  
+![][29]  
+Existe un método que restaura el sistema, cambiando la tabla de llamadas al sistema, desactivando el *rickrolling*, teniendo en cuenta que necesario desactivar y activar la protección de escritura en memoria con las variables  DISABLE_WRITE_PROTECTION y ENABLE_WRITE_PROTECTION, que se usaron cada vez que era necesario alterar la tabla de llamados al sistema,   
+![][30]  
+Cabe aclarar que todo el código descrito anteriormente no podría ejecutarse sin la inicialización y cierre del driver que se realiza gracias a los modulos de module_init y module_exit, el primero llama al método de inicialización y el segundo al de restauración del sistema.
+![][31]  
+
+
+
+
 
 
 ### Referencias
@@ -134,4 +159,15 @@ Algo que fue necesario para que el script corriera correctamente desde root, fue
 [20]: images/PrimerLibro.PNG 
 [21]: images/SegundoLibro.PNG 
 [22]: images/OnlyOne.PNG
+[23]: images/Rickroll1.PNG
+[24]: images/Rickroll2.PNG
+[25]: images/Rickroll3.PNG
+[26]: images/Rickroll4.PNG
+[27]: images/Rickroll5.PNG
+[28]: images/Rickroll8.PNG
+[29]: images/Rickroll6.PNG
+[30]: images/Rickroll7.PNG
+[31]: images/Rickroll9.PNG
+
+
 
